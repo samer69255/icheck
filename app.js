@@ -1,8 +1,12 @@
 
 var {Init, Check} = require("./checki.js");
 var fs = require('fs');
+var request = require("request");
+var config = fs.readFileSync("./config.json");
+config = JSON.parse(config);
   
-var Id = "insx-th1";
+//var Id = "insx-th1";
+var Id = config.Id;
 
 function getUsr(i) {
   try {
@@ -12,7 +16,7 @@ function getUsr(i) {
     return usrs[i];
   } catch(e) {
     //throw e;
-    sendMail(Id, "حدث خطأ في قراءة ملف البيانات");
+    SendNf(Id, "حدث خطأ في قراءة ملف البيانات");
   }
     
 }
@@ -26,12 +30,12 @@ async function Start(app) {
     res.write("\n");
     res.write((f-n) + " Left");
     res.write("\n");
-    res.end(`Time: ${sec / 60 / 60 } Hours`);
+    res.end(`Time: ${Math.floor(sec / 60 / 60) } Hours`);
   })
   console.log("Init Cookies ...");
   await Init();
   console.log("Runing Length: " + f);
-  sendMail(Id, `بدأ العملية مع ${f} احتمال\nالوقت المقدر ${Math.floor((f*2)/60/60/24)} ايام`);
+  SendNf(Id, `بدأ العملية مع ${f} احتمال\nالوقت المقدر ${Math.floor((f*2)/60/60/24)} ايام`);
   do {
     var usr = getUsr(n++);
     console.log("checking " + usr);
@@ -42,7 +46,7 @@ async function Start(app) {
     if (typeof ch == "object") {
       console.log(ch);
       if (ch.err == 1) {
-        sendMain(Id, "حدث خطأ رقم 1, تم ايقاف العملية لمدة خمس دقائق");
+        SendNf(Id, "حدث خطأ رقم 1, تم ايقاف العملية لمدة خمس دقائق");
         await timer(5*60*1000);
         await Init();
         n--;
@@ -50,11 +54,11 @@ async function Start(app) {
       }
        
       if (ch.err == 2) {
-         sendMail(Id, `حدث خطأ رقم 2, تم ايقاف العملية. \nالتفاصيل: \nbody: ${ch.data}\nn${n}\nf: ${f}`);
+         SendNf(Id, `حدث خطأ رقم 2, تم ايقاف العملية. \nالتفاصيل: \nbody: ${ch.data}\nn${n}\nf: ${f}`);
          break;
       }
       if (ch.err == 3) {
-        sendMail(Id, `حدث خطأ رقم 2, تم ايقاف العملية. \nالتفاصيل: \nbody: ${ch.data}`);
+        SendNf(Id, `حدث خطأ رقم 2, تم ايقاف العملية. \nالتفاصيل: \nbody: ${ch.data}`);
          break;
       }
       
@@ -64,17 +68,17 @@ async function Start(app) {
       save(usr);
     }
     
-    await timer(1500);
+    await timer(Math.floor(Math.random()*(1900-1400+1)+1400));
 } while (n < f);
 
 console.log("Comple!");
-sendMail("اكتمل التحقق");
+SendNf("اكتمل التحقق");
 }
 
 function timer(ms) {
  return new Promise(res => setTimeout(res, ms));
 }
-
+/*
 function sendMail(subject, mess) {
   const mailgun = require("mailgun-js");
   const DOMAIN = 'sandboxef7e0bc0f5e34c98a51796d9ab62e933.mailgun.org';
@@ -89,6 +93,18 @@ function sendMail(subject, mess) {
   mg.messages().send(data, function (error, body) {
 	  console.log(body);
   });
+}*/
+
+function SendNf(Id, txt) {
+	var url = `https://api.telegram.org/bot827824825:AAFvcUklfS_oG62x1zBjF8qVkdpDr8ny03Q/sendMessage?chat_id=803350894&text=${txt}`;
+	var options = {
+		url: url,
+		method: "GET"
+	};
+	request(options, (err, response, body) => {
+		if (err) return console.log(err);
+		console.log(body);
+	});
 }
 
 function save(u) {
@@ -98,9 +114,9 @@ function save(u) {
      uu += `${u}\n`;
     fs.writeFileSync(file, uu);
     console.log("save!");
-    sendMail(Id, `تم رصد مستخدم واحد \nUsername: ${u}`);
+    SendNf(Id, `تم رصد مستخدم واحد \nUsername: ${u}`);
   } catch(e) {
-    sendMail(Id, "حدث خطأ في قراءة ملف التخزين");
+    SendNf(Id, "حدث خطأ في قراءة ملف التخزين");
     //throw e;
   }
   
