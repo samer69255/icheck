@@ -16,7 +16,7 @@ function getUsr(i) {
     return usrs[i];
   } catch(e) {
     //throw e;
-    SendNf(Id, "حدث خطأ في قراءة ملف البيانات");
+    SendNf("حدث خطأ في قراءة ملف البيانات");
   }
     
 }
@@ -35,7 +35,7 @@ async function Start(app) {
   console.log("Init Cookies ...");
   await Init();
   console.log("Runing Length: " + f);
-  SendNf(Id, `بدأ العملية مع ${f} احتمال\nالوقت المقدر ${Math.floor((f*2)/60/60/24)} ايام`);
+  SendNf(`بدأ العملية مع ${f} احتمال\nالوقت المقدر ${Math.floor((f*2)/60/60/24)} ايام`);
   do {
     var usr = getUsr(n++);
     console.log("checking " + usr);
@@ -46,7 +46,7 @@ async function Start(app) {
     if (typeof ch == "object") {
       console.log(ch);
       if (ch.err == 1) {
-        SendNf(Id, "حدث خطأ رقم 1, تم ايقاف العملية لمدة خمس دقائق");
+        SendNf("حدث خطأ رقم 1, تم ايقاف العملية لمدة خمس دقائق");
         await timer(5*60*1000);
         await Init();
         n--;
