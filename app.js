@@ -54,11 +54,11 @@ async function Start(app) {
       }
        
       if (ch.err == 2) {
-         SendNf(Id, `حدث خطأ رقم 2, تم ايقاف العملية. \nالتفاصيل: \nbody: ${ch.data}\nn${n}\nf: ${f}`);
+         SendNf(`حدث خطأ رقم 2, تم ايقاف العملية. \nالتفاصيل: \nbody: ${ch.data}\nn${n}\nf: ${f}`);
          break;
       }
       if (ch.err == 3) {
-        SendNf(Id, `حدث خطأ رقم 2, تم ايقاف العملية. \nالتفاصيل: \nbody: ${ch.data}`);
+        SendNf(`حدث خطأ رقم 2, تم ايقاف العملية. \nالتفاصيل: \nbody: ${ch.data}`);
          break;
       }
       
@@ -95,8 +95,9 @@ function sendMail(subject, mess) {
   });
 }*/
 
-function SendNf(Id, txt) {
-	var url = `https://api.telegram.org/bot827824825:AAFvcUklfS_oG62x1zBjF8qVkdpDr8ny03Q/sendMessage?chat_id=803350894&text=${txt}`;
+function SendNf(msg) {
+	msg = Id + ": " + "\n" + msg;
+	var url = `https://api.telegram.org/bot827824825:AAFvcUklfS_oG62x1zBjF8qVkdpDr8ny03Q/sendMessage?chat_id=803350894&text=${msg}`;
 	var options = {
 		url: url,
 		method: "GET"
@@ -114,9 +115,9 @@ function save(u) {
      uu += `${u}\n`;
     fs.writeFileSync(file, uu);
     console.log("save!");
-    SendNf(Id, `تم رصد مستخدم واحد \nUsername: ${u}`);
+    SendNf(`تم رصد مستخدم واحد \nUsername: ${u}`);
   } catch(e) {
-    SendNf(Id, "حدث خطأ في قراءة ملف التخزين");
+    SendNf("حدث خطأ في قراءة ملف التخزين");
     //throw e;
   }
   
