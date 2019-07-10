@@ -35,7 +35,7 @@ async function Start(app) {
   console.log("Init Cookies ...");
   await Init();
   console.log("Runing Length: " + f);
-  SendNf(`بدأ العملية مع ${f} احتمال\nالوقت المقدر ${Math.floor((f*2)/60/60/24)} ايام`);
+  SendNf(`بدأ العملية مع ${f} احتمال\nالوقت المقدر ${Math.floor((f*2)/60/60/24)} ايام\n${config.url}`);
   do {
     var usr = getUsr(n++);
     console.log("checking " + usr);
@@ -121,7 +121,6 @@ function save(u) {
     //throw e;
   }
   
- 
 }
 
 module.exports = Start
