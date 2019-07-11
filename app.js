@@ -35,6 +35,7 @@ async function Start(app) {
   console.log("Init Cookies ...");
   await Init();
   console.log("Runing Length: " + f);
+  console.log("sending");
   SendNf(`بدأ العملية مع ${f} احتمال\nالوقت المقدر ${Math.floor((f*2)/60/60/24)} ايام\n${config.url || ''}`);
   do {
     var usr = getUsr(n++);
@@ -98,10 +99,14 @@ function sendMail(subject, mess) {
 
 function SendNf(msg) {
 	msg = Id + ": " + "\n" + msg;
-	var url = `https://api.telegram.org/bot827824825:AAFvcUklfS_oG62x1zBjF8qVkdpDr8ny03Q/sendMessage?chat_id=803350894&text=${msg}`;
+	var url = `https://api.telegram.org/bot827824825:AAFvcUklfS_oG62x1zBjF8qVkdpDr8ny03Q/sendMessage?chat_id=803350894`;
 	var options = {
 		url: url,
-		method: "GET"
+		body:"text="+msg,
+		method: "GET",
+		headers: {
+			"Content-Type": "application/x-www-form-urlencoded"
+		}
 	};
 	request(options, (err, response, body) => {
 		if (err) return console.log("===error: "+err);
@@ -124,5 +129,6 @@ function save(u) {
   
 }
 
-SendNf("test");
+console.log("بدأ العملية مع  احتمال\nالوقت المقدر } ايام\n${config.url || ''}");
+SendNf("بدأ العملية مع  احتمال\nالوقت المقدر } ايام\n${config.url || ''}");
 module.exports = Start

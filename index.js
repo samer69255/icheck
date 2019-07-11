@@ -12,6 +12,7 @@ app.get("/usrs", (req, res) => {
 
 // run time heroku app
 if (config.url) {
+	console.log("realtime start");
 	var request = require("request");
 	setInterval(() => {
 		request.get(config.url, (err, res, body) => {});
