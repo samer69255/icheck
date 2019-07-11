@@ -36,14 +36,19 @@ async function Start(app) {
   await Init();
   console.log("Runing Length: " + f);
   console.log("sending");
+  var stime = (new Date()).getTime();
   SendNf(`بدأ العملية مع ${f} احتمال\nالوقت المقدر ${Math.floor((f*2)/60/60/24)} ايام\n${config.url || ''}`);
   do {
+	var now = (new Date()).getTime();
     var usr = getUsr(n++);
+	var t = stime - now;
+	if (t.getminutes() >= 30) {
+		stime = now;
+		SendNf("العملية مازالت تعمل");
+	}
     console.log("checking " + usr);
-    var now = (new Date()).getTime();
     var ch = await Check(usr);
-    var time = (new Date).getTime() - now;
-    console.log("=> " + ch, "time " + time);
+    console.log("=> " + ch);
     if (typeof ch == "object") {
       console.log(ch);
       if (ch.err == 1) {
@@ -129,6 +134,5 @@ function save(u) {
   
 }
 
-console.log("بدأ العملية مع  احتمال\nالوقت المقدر } ايام\n${config.url || ''}");
-SendNf("بدأ العملية مع  احتمال\nالوقت المقدر } ايام\n${config.url || ''}");
+
 module.exports = Start
