@@ -53,7 +53,7 @@ async function Start(app) {
       console.log(ch);
       if (ch.err == 1) {
         SendNf("حدث خطأ رقم 1, تم ايقاف العملية لمدة خمس دقائق");
-        await timer(5*60*1000);
+        await timer(3*60*1000);
         await Init();
         n--;
 		SendNf("تمت اعادة تشغيل العملية");
