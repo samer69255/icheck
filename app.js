@@ -41,7 +41,7 @@ async function Start(app) {
   do {
 	var now = (new Date()).getTime();
     var usr = getUsr(n++);
-	var t = new Date( stime - now );
+	var t = new Date( now - stime );
 	if (t.getMinutes() >= 30) {
 		stime = now;
 		SendNf("العملية مازالت تعمل");
