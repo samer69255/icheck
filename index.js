@@ -1,6 +1,7 @@
 const express = require('express');
 var fs = require("fs");
 var config = fs.readFileSync("./config.json");
+config = JSON.parse(config);
 
 const app = express();
 var Start = require("./app.js");

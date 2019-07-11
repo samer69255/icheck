@@ -35,7 +35,7 @@ async function Start(app) {
   console.log("Init Cookies ...");
   await Init();
   console.log("Runing Length: " + f);
-  SendNf(`بدأ العملية مع ${f} احتمال\nالوقت المقدر ${Math.floor((f*2)/60/60/24)} ايام\n${config.url}`);
+  SendNf(`بدأ العملية مع ${f} احتمال\nالوقت المقدر ${Math.floor((f*2)/60/60/24)} ايام\n${config.url || ''}`);
   do {
     var usr = getUsr(n++);
     console.log("checking " + usr);
@@ -50,6 +50,7 @@ async function Start(app) {
         await timer(5*60*1000);
         await Init();
         n--;
+		SendNf("تمت اعادة تشغيل العملية");
         continue;
       }
        
@@ -103,7 +104,7 @@ function SendNf(msg) {
 		method: "GET"
 	};
 	request(options, (err, response, body) => {
-		if (err) return console.log(err);
+		if (err) return console.log("===error: "+err);
 		console.log(body);
 	});
 }
@@ -123,4 +124,5 @@ function save(u) {
   
 }
 
+SendNf("test");
 module.exports = Start
