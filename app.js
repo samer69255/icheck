@@ -44,7 +44,8 @@ async function Start(app) {
 	var t = new Date( now - stime );
 	if (t.getMinutes() >= 30) {
 		stime = now;
-		SendNf("العملية مازالت تعمل");
+		var tt1 = (config.url || "") + "العملية مازالت تعمل";
+		SendNf(tt1);
 	}
     console.log("checking " + usr);
     var ch = await Check(usr);
